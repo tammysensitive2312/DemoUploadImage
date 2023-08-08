@@ -1,4 +1,5 @@
 package Controllers;
+import Dal.ImageDAO;
 import Model.Image;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 @Controller("UploadImageController")
@@ -19,14 +21,14 @@ public class uploadImageController {
     public String uploadDir;
     @GetMapping("/upload-image")
     public String uploadFile(Model model) {
-        model.addAttribute("image", new Image());
+        ImageDAO imageDAO = new ImageDAO();
+        ArrayList<Image> images = imageDAO.getList();
+        model.addAttribute("images", images);
         return "upload-image";
     }
 
     @PostMapping("/upload-image-handler")
-    public String uploadFileHandler(
-            @ModelAttribute Image image,
-            @RequestParam("img") MultipartFile file) {
+    public String uploadFileHandler(@RequestParam("img") MultipartFile file) {
 
         try {
             Calendar calendar = Calendar.getInstance();
@@ -39,10 +41,13 @@ public class uploadImageController {
                 folder.mkdir();
             }
 
-            FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\ACER\\Documents\\Images\\" + file.getOriginalFilename());
+            String relativePath = newDir + File.separator + System.currentTimeMillis();
+            String absolutePath = uploadDir + relativePath;
+            FileOutputStream fileOutputStream = new FileOutputStream(absolutePath);
             fileOutputStream.write(file.getBytes());
 
-
+            ImageDAO dao = new ImageDAO();
+            dao.insert(relativePath);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

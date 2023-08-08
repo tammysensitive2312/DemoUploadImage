@@ -4,16 +4,16 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DatabaseManager {
-    private String URL = "jdbc:mysql://localhost:3306/image_upload_db";
+    private String URL = "jdbc:mysql://localhost:3306/springboot08";
     private String username = "root";
-    private String password = null;
+    private String password = "";
     protected Connection connection;
 
     public DatabaseManager() {
-        this.Connection();
+        this.connection();
     }
 
-    public void Connection() {
+    public void connection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             this.connection = DriverManager.getConnection(URL, username, password);

@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class Image {
-    protected String id;
+    protected int id;
     protected String imagePath;
 
-    public Image(String id, String imagePath) {
+    public Image(int id, String imagePath) {
         this.id = id;
         this.imagePath = imagePath;
     }
