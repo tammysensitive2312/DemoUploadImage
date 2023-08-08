@@ -6,9 +6,13 @@
     <title>Title</title>
 </head>
 <body>
-<form th:action="@{'/upload-image-handler'}" method="post" enctype="multipart/form-data">
+<form th:action="@{/upload-image-handler}" method="post" enctype="multipart/form-data">
   <input type="file" name="img" accept=".jpg, .jpeg, .png" />
-  <input type="submit" value="Upload">
+  <button>Submit</button>
+
+        <div th:each="image : ${images}" >
+            <img th:src="@{${image.getPath()}}" alt="">
+        </div>
 </form>
 </body>
 </html>
